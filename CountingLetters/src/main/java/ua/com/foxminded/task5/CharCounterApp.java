@@ -16,15 +16,15 @@ public class CharCounterApp {
         List<String> words = new ArrayList<>();
 
         System.out.println("enter words through Enter\n" + "To end input enter 'stop'");
-        String word = reader.readLine();
+        String inputWord = reader.readLine();
 
-        while (!word.equals("stop")) {
-            words.add(word);
-            word = reader.readLine();
+        while (!inputWord.equals("stop")) {
+            words.add(inputWord);
+            inputWord = reader.readLine();
         }
 
-        for (String wordFromList : words) {
-            System.out.println(charCounter.countLetters(wordFromList));
+        for (String word : words) {
+            System.out.println(charCounter.printUniqueCharacters(word));
         }
     }
 }
