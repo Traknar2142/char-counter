@@ -1,19 +1,67 @@
 package ua.com.foxminded.task5.charcounter;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
+
+import java.lang.reflect.Field;
+import java.time.Duration;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
 class CharCounterTest {
     CharCounter counter = new CharCounter();
+    Class counterReflect = counter.getClass();
     
+    @Test
+    void countLetters_TestShouldPass_WhenKeyAndValueInCacheAndReflectCacheIsTheSame() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException  {
+        counter.printUniqueCharacters("Cache check");
+        Field cache = counterReflect.getDeclaredField("cache");
+        cache.setAccessible(true);
+        Map<String, String> cacheReflect = (Map<String, String>) cache.get(counter);
+        cacheReflect.containsKey("Cache check");
+        assertTrue(cacheReflect.containsKey("Cache check") && cacheReflect.containsValue("Cache check\n" +
+                                                                                         "\"C\" - 1\n" + 
+                                                                                         "\"a\" - 1\n" + 
+                                                                                         "\"c\" - 3\n" + 
+                                                                                         "\"h\" - 2\n" + 
+                                                                                         "\"e\" - 2\n" + 
+                                                                                         "\" \" - 1\n" + 
+                                                                                         "\"k\" - 1\n"));
+    }
+    
+    @Test
+    void countLetters_TestShouldPass_WhenTimeOfSecondMethodCallIsLessThanFirstCall() {
+        long startTime = System.currentTimeMillis();
+        String inputString = "The end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never "
+                + "the end is never the end is never the end is never the end is never the end is never the end is never the end is never ";
+        counter.printUniqueCharacters(inputString);
+        long endTime = System.currentTimeMillis();
+        long duration = (endTime - startTime);
+        assertTimeout(Duration.ofMillis(duration), () -> counter.printUniqueCharacters(inputString));
+    }
+
     @Test
     void countLetters_ShouldReturnNothing_WhenInputIsNothing() {
         String input = "";
         String expected = "";
         assertEquals(expected, counter.printUniqueCharacters(input));
     }
-    
+
     @Test
     void countLetters_ShouldReturnOneSpace_WhenInputIsOneSpace() {
         String input = " ";
@@ -54,23 +102,7 @@ class CharCounterTest {
                           "\"A\" - 3\n" + 
                           "\"a\" - 2";
         assertEquals(expected, counter.printUniqueCharacters(input));
-    }
-    
-    @Test
-    void countLetters_ShouldReturnOneQuestionMark_WhenInputIsTwoOneQuestionMark() {
-        String input = "?";
-        String expected = "?\n" + 
-                          "\"?\" - 1";
-        assertEquals(expected, counter.printUniqueCharacters(input));
-    }
-    
-    @Test
-    void countLetters_ShouldReturnOneQuestionMark_WhenInputIsTwoTweoQuestionsMark() {
-        String input = "??";
-        String expected = "??\n" + 
-                          "\"?\" - 2";
-        assertEquals(expected, counter.printUniqueCharacters(input));
-    }
+    }       
     
     @Test
     void countLetters_ShouldReturnOneQuestionMarkAndTilde_WhenInputIsTwoTweoQuestionsMarkAndTwoTildes() {

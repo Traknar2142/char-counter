@@ -6,10 +6,9 @@ import java.util.stream.Collectors;
 public class CharCounter {
     private Map<String, String> cache = new HashMap<>();
 
-    public String printUniqueCharacters(String word) {
-        String st1 = Optional.ofNullable(cache.get(word)).orElseGet(() -> makeOutputString(word));
-
-        return st1.substring(0, st1.toString().length() - 1);
+    public String printUniqueCharacters(String inputWord) {
+        String outputString = cache.computeIfAbsent(inputWord, word -> makeOutputString(word));
+        return outputString.substring(0, outputString.length() - 1);
     }
 
     private String makeOutputString(String word) {
