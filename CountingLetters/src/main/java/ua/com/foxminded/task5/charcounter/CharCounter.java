@@ -6,28 +6,27 @@ import java.util.stream.Collectors;
 public class CharCounter {
     private Map<String, String> cache = new HashMap<>();
 
-    public String printUniqueCharacters(String inputWord) {
-        String outputString = cache.computeIfAbsent(inputWord, word -> makeOutputString(word));
-        return outputString.substring(0, outputString.length() - 1);
+    public String printUniqueCharacters(String inputString) {
+        String outputString = cache.computeIfAbsent(inputString, string -> makeOutputString(string));
+        return outputString;
     }
 
     private String makeOutputString(String word) {
         StringBuilder result = new StringBuilder();
 
-        List<Character> inputWord = word
+        List<Character> inputString = word
                 .chars()
                 .mapToObj(letter -> Character.valueOf((char) letter))
                 .collect(Collectors.toList());
-        Set<Character> setOfCharWithoutIteration = new LinkedHashSet<>(inputWord);
-        Map<Character, Long> numbersOfOccurrences = inputWord
+        Set<Character> setOfChars = new LinkedHashSet<>(inputString);
+        Map<Character, Long> frequency = inputString
                 .stream()
                 .collect(Collectors.groupingBy(letter -> letter, Collectors.counting()));
 
         result.append(word + "\n");
-        setOfCharWithoutIteration.forEach(
-                letter -> result.append("\"" + letter + "\"" + " - " + numbersOfOccurrences.get(letter) + "\n"));
-
-        cache.put(word, result.toString());
-        return result.toString();
+        setOfChars.forEach(
+                letter -> result.append("\"" + letter + "\"" + " - " + frequency.get(letter) + "\n"));
+        String resultString = result.toString().substring(0, result.toString().length() - 1);
+        return resultString;
     }
 }
