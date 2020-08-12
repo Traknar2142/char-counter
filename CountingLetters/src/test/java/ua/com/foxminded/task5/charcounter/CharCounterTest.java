@@ -28,7 +28,7 @@ class CharCounterTest {
                                                                                          "\"h\" - 2\n" + 
                                                                                          "\"e\" - 2\n" + 
                                                                                          "\" \" - 1\n" + 
-                                                                                         "\"k\" - 1"));        
+                                                                                         "\"k\" - 1"));
     }
     
     @Test
